@@ -1,0 +1,3 @@
+Junior Software Developer
+We want someone with Python, React and SQL experience.
+Experience with Docker, AWS and automated testing is a plus.
