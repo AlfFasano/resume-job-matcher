@@ -3,7 +3,6 @@
 import json
 import sys
 
-import anthropic
 
 MODEL = "claude-sonnet-5-5"
 
@@ -31,8 +30,19 @@ def read_file(path):
         return f.read()
 
 
+DEMO_RESULT = {
+    "match_score": 72,
+    "matching_skills": ["Python", "React", "SQL (PostgreSQL)"],
+    "missing_skills": ["Docker", "AWS", "Automated testing"],
+    "advice": "This is a sample result from demo mode, not a real analysis. "
+    "Run without --demo and with an API key to get Claude's actual feedback.",
+}
+
+
 def compare(resume, job):
     """Send the resume and job post to Claude and return its answer as a dict."""
+    import anthropic  # imported here so --demo works without the library
+
     client = anthropic.Anthropic()  # reads ANTHROPIC_API_KEY from the environment
     message = client.messages.create(
         model=MODEL,
@@ -59,12 +69,19 @@ def show(result):
 
 
 def main():
-    if len(sys.argv) != 3:
-        print("Usage: python matcher.py <resume.txt> <job.txt>")
+    args = sys.argv[1:]
+    demo = "--demo" in args
+    args = [a for a in args if a != "--demo"]
+    if len(args) != 2:
+        print("Usage: python matcher.py [--demo] <resume.txt> <job.txt>")
         sys.exit(1)
-    resume = read_file(sys.argv[1])
-    job = read_file(sys.argv[2])
-    result = compare(resume, job)
+    resume = read_file(args[0])
+    job = read_file(args[1])
+    if demo:
+        print("DEMO MODE: sample result, Claude was not called and nothing was charged.\n")
+        result = DEMO_RESULT
+    else:
+        result = compare(resume, job)
     show(result)
 
 
