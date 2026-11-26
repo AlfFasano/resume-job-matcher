@@ -10,7 +10,8 @@ You need Python 3.9 or newer and an Anthropic API key.
 
 1. Install the library: `pip install -r requirements.txt`
 2. Set your API key: `export ANTHROPIC_API_KEY=your-key-here` (on Windows PowerShell: `$env:ANTHROPIC_API_KEY="your-key-here"`)
-3. Run it on the examples: `python matcher.py examples/resume.txt examples/job.txt`
+3. Try it free first, with no API key: `python matcher.py --demo examples/resume.txt examples/job.txt` (prints a sample result; Claude isn't called)
+4. Run it for real on the examples: `python matcher.py examples/resume.txt examples/job.txt`
 
 ## How it works
 
